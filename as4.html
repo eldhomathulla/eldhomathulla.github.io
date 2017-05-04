@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Distributed Caching</title>
+<title>Distributed Caching in Django</title>
 <link href="css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="css/per.css" rel="stylesheet" type="text/css">
 
@@ -17,6 +17,51 @@
 </head>
 <body>
 	<div class="container">
+		<section class="each-section">
+			<h2>Distributed Caching in Django</h2>
+			<div class="sub-section">
+				<h3 class="subsection-header">Goal</h3>
+				<p>Main goal of this is to find the possible cache storage that be used in django for the purpose of Distributed Caching.</p>
+			</div>
+			<div class="sub-section">
+				<h3 class="subsection-header">Possible Solutions</h3>
+				<p>For the purpose of distributed caching 2 cache storage options were considered.
+				<ul>
+					<li>Memcached</li>
+					<li>Redis</li>
+				</ul>
+				<h4>Memcached<h4>
+				<p>Memcache is a simple distributed caching mechanism. Django itself provides default support for memcached support without third party libraraies. In Django we can specify th urls to multiple memcached instances.  
+				<h4>Redis</h4>
+				<p>Redis is distributed key-value pair data store. Django itself doesnt have direct direct support for using Redis as a cache storage. Therfore we can implement our own cache stor for redis or use other available third party redis store for caching in django by implementing django.</p>
+				</p>
+				
+			</div>
+			<div class="sub-section">
+				<h3>Redis vs Memecached</h3>
+				  
+				<p>Before getting into actual evaluations of the test results between Redis and Memcached implementation. These are the few things I observer during implememntaion of Redis and memcached cache storage in django.</p>
+				<h4>Cache sharing between multiple django instances<h4>
+					One of the major issue that I found during a simple set up for testing if the cache has been shared by multiple instances, is that for some reason, it was not happening.
+					This was because the django caching frameowrk generate keys for each caching where it incluse information specific to the instance like its particular url details and absolute path of the  cache.
+					To mitigate this issue, I have implemented a custom cache extending django current caching framework to generate keys without server specific information, so that multple server can access the sam cache for the sam request.
+					
+			<div>
+			<div class="sub-section">
+			<h3 class="subsection-header">Others</h3>
+			<h4>Github issues</h4>
+			<ol>
+				<li><a href="https://github.com/airavata-courses/spring17-django-portal/issues/7">#7</a></li>
+				<li><a href="https://github.com/airavata-courses/spring17-django-portal/issues/8">#8</a></li>
+				<li><a href="https://github.com/airavata-courses/spring17-django-portal/issues/10">#10</a></li>
+			</ol>
+			<h4>Github Commits</h4>
+			<ol>
+				<li><a href="https://github.com/airavata-courses/spring17-django-portal/commit/3366994cdfafd804a92c40ad77922c847c6ab4bb">Adding redis cache support for django</a></li>
+				<li><a href="https://github.com/airavata-courses/spring17-django-portal/commit/dd7ed0baf8cd52b656b8e0ee4eaf10ed9396b201">Adding custom cache extending djangos cache frameowrk to create cache keys for distributed caching</a></li>
+			</ol>
+		</div>
+		</section>
 	</div>
 </body>
 </html>
