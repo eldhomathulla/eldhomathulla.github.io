@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Django Portal User Interface</title>
+<link href="css/bootstrap.css" rel="stylesheet" type="text/css">
+<link href="css/per.css" rel="stylesheet" type="text/css">
+
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<![endif]-->
+</head>
+<body>
+	<div class="container">
+		<section class="each-section">
+			<h2>Django Portal User Interface</h2>
+			<div class="sub-section">
+				<h3 class="subsection-header">Goal</h3>
+				<p>
+    				The main goal of this is to come up with possible technologies and high level approach for the user interface structure and underlying portal backend, for the django portal. Following where the key things to be considered for such a structure:
+					<ul>
+						<li>Should be able to integrate different sections within the portal seamlesly</li>
+						<li>Should be flexible in allowing use of approach and technolgies in development of the UI</li>
+						<li>Each Section should be contained within itself and should not intefer with other sections of the portal</li>
+					</ul>
+				</p>
+			</div>
+			<div class="sub-section">
+				<h3 class="subsection-header">Approaches</h3>
+				<p>
+    				There are 2 different approaches that have been considered.
+				</p>
+				<p>
+    				The first one is using a javascript heavy frontend, i.e. all UI processing will be done on the client side using javascript. In this approach, the Django portal backend will simply act as a conduit for fetching the data required for the user interface. This means that the user interface itself will be highly decoupled from the middleware. 
+				</p>
+				<p>
+    				The advantage of such an approach is that, since UI is not tightly coupled with the middleware, these 2 can be more independently developed as well as integrating both will be easier. Also, more structured UI component can be developed and helps to boost the reusability id UI components.
+				</p>
+				<p>
+    				The major problem with the client side heavy UI processing is that the code base of the user interface become very complicated and will require the use of MVC like frameworks like Angularjs and Ember. This means that only people who have advanced skills in JavaScript, can be involved in developing the user interface. This also means that flexibility in using the frontend technologies also get greatly reduced
+				</p>
+				<p>
+    				The second approach is to isolate the User interface of the different section from that of the main section. The best way to do so was through the use of iframes. This allows to provide the necessary flexibility as a  part of the portal can be developed independently in any manner without interfering with other section and allows to use either client heavy user interface processing or a mix of client heavy user interface processing as well as backend user interface processing or exclusively using backend user interface processing if required. This approach will allow people with just basic skills in front-end development to create user interfaces as well.
+				</p>
+			</div>
+			<div class="sub-section">
+				<h3 class="subsection-header">Conclusion</h3>
+   			Inorder to provide flexibility in where the UI processing is done, the seccond approach will be the better fit, as it can be used in such a way that a seamless Single Page Applications may be create if wanted, or an application where most of the UI processing is done in the django itself. In this approch all the navigation related stuff will be common for all the applications as it will be defined outside the in iframe itself.
+			</div>
+		</section>
+		<div class="sub-section">
+			<h3 class="subsection-header">Others</h3>
+			<h4>Github issues</h4>
+			<ol>
+				<li><a href="https://github.com/airavata-courses/spring17-django-portal/issues/1">#1</a></li>
+				<li><a href="https://github.com/airavata-courses/spring17-django-portal/issues/2">#2</a></li>
+			</ol>
+			<h4>Github Commits</h4>
+			<ol>
+				<li><a href="https://github.com/airavata-courses/spring17-django-portal/commit/4c4d0ad991592357639fd5d9404d2c9892a8f535">Creating basic django app</a></li>
+				<li><a href="https://github.com/airavata-courses/spring17-django-portal/commit/4c4d0ad991592357639fd5d9404d2c9892a8f535">Creating a basic user inetrface to integrate multiple django apps in a single app</a></li>
+			</ol>
+		</div>
+	</div>
+</body>
+</html>
