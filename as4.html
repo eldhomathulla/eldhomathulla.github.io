@@ -1,67 +1,127 @@
 <!doctype html>
 <html>
-<head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Distributed Caching in Django</title>
-<link href="css/bootstrap.css" rel="stylesheet" type="text/css">
-<link href="css/per.css" rel="stylesheet" type="text/css">
+	<head>
+		<meta charset="utf-8">
+			<meta http-equiv="X-UA-Compatible" content="IE=edge">
+				<meta name="viewport" content="width=device-width, initial-scale=1.0">
+					<title>Distributed Caching in Django</title>
+					<link href="css/bootstrap.css" rel="stylesheet" type="text/css">
+						<link href="css/per.css" rel="stylesheet" type="text/css">
 
-<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-<!--[if lt IE 9]>
+							<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+							<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+							<!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
-</head>
-<body>
-	<div class="container">
-		<section class="each-section">
-			<h2>Distributed Caching in Django</h2>
-			<div class="sub-section">
-				<h3 class="subsection-header">Goal</h3>
-				<p>Main goal of this is to find the possible cache storage that be used in django for the purpose of Distributed Caching.</p>
-			</div>
-			<div class="sub-section">
-				<h3 class="subsection-header">Possible Solutions</h3>
-				<p>For the purpose of distributed caching 2 cache storage options were considered.
-				<ul>
-					<li>Memcached</li>
-					<li>Redis</li>
-				</ul>
-				<h4>Memcached<h4>
-				<p>Memcache is a simple distributed caching mechanism. Django itself provides default support for memcached support without third party libraraies. In Django we can specify th urls to multiple memcached instances.  
-				<h4>Redis</h4>
-				<p>Redis is distributed key-value pair data store. Django itself doesnt have direct direct support for using Redis as a cache storage. Therfore we can implement our own cache stor for redis or use other available third party redis store for caching in django by implementing django.</p>
-				</p>
-				
-			</div>
-			<div class="sub-section">
-				<h3>Redis vs Memecached</h3>
-				  
-				<p>Before getting into actual evaluations of the test results between Redis and Memcached implementation. These are the few things I observer during implememntaion of Redis and memcached cache storage in django.</p>
-				<h4>Cache sharing between multiple django instances<h4>
-					One of the major issue that I found during a simple set up for testing if the cache has been shared by multiple instances, is that for some reason, it was not happening.
-					This was because the django caching frameowrk generate keys for each caching where it incluse information specific to the instance like its particular url details and absolute path of the  cache.
-					To mitigate this issue, I have implemented a custom cache extending django current caching framework to generate keys without server specific information, so that multple server can access the sam cache for the sam request.
-					
-			<div>
-			<div class="sub-section">
-			<h3 class="subsection-header">Others</h3>
-			<h4>Github issues</h4>
-			<ol>
-				<li><a href="https://github.com/airavata-courses/spring17-django-portal/issues/7">#7</a></li>
-				<li><a href="https://github.com/airavata-courses/spring17-django-portal/issues/8">#8</a></li>
-				<li><a href="https://github.com/airavata-courses/spring17-django-portal/issues/10">#10</a></li>
-			</ol>
-			<h4>Github Commits</h4>
-			<ol>
-				<li><a href="https://github.com/airavata-courses/spring17-django-portal/commit/3366994cdfafd804a92c40ad77922c847c6ab4bb">Adding redis cache support for django</a></li>
-				<li><a href="https://github.com/airavata-courses/spring17-django-portal/commit/dd7ed0baf8cd52b656b8e0ee4eaf10ed9396b201">Adding custom cache extending djangos cache frameowrk to create cache keys for distributed caching</a></li>
-			</ol>
-		</div>
-		</section>
-	</div>
-</body>
-</html>
+						</head>
+						<body>
+							<div class="container">
+								<section class="each-section">
+									<h2>Distributed Caching in Django</h2>
+									<div class="sub-section">
+										<h3 class="subsection-header">Goal</h3>
+										<p>Main goal of this is to find the possible cache storage that be used in django for the purpose of Distributed Caching.</p>
+									</div>
+									<div class="sub-section">
+										<h3 class="subsection-header">Possible Solutions</h3>
+										<p>For the purpose of distributed caching 2 cache storage options were considered.
+											<ul>
+												<li>Memcached</li>
+												<li>Redis</li>
+											</ul>
+											<h4>Memcached</h4>
+											<p>Memcached [7] is a distributed cache store which is
+												explicitly made for caching purpose. Memcached instances
+												themselves do not have any distributed system ability.
+												Instead everything is managed by the client interacting with
+												the Memcached. The client takes decisions regarding which
+												cache the data should be stored at, and for replication
+												purpose, the client sends the same request to other
+												Memcached instances.
+												Django by default has support for Memcached.
+												Therefore, we can simply specify the set of Memcached
+												instances urls, that need to be used in the Django settings.</p>
+											<h4>Redis</h4>
+											<p>
+												Redis [8] is distributed key value pair data store which
+												can be used for distributed caching. The main aspect of
+												Redis that allows it to be used as a cache storage is the key
+												value pair storage approach of the redis. Unlike
+												Memcached, Redis is a fully distributed highly available
+												application by itself.
+												Django does not directly provide support for Redis as
+												cache store. Therefore a custom cache store which
+												implements the cache store api of Django needs to be
+												implemented or other third party Redis cache store for
+												django can be used.
+												Redis can be setup in multiple ways, like in standalone
+												mode, master slave mode or as a cluster. In Standalone
+												mode there is just a single Redis instance. In this mode
+												Redis is not a highly available distributed system.
+												In a master slave mode, there is single master instance
+												and multiple slave instances. These slave instances store
+												the exact data as the master, i.e it replicates the data from
+												the master. This aspect of Redis is used for fault tolerance
+												and high availability in Redis .
+												In Redis cluster, there can be multiple masters & slaves
+												where certain key value pair will be stored only in certain
+												master slaves and not others i.e. it splits the storage of data
+												among multiple redis masters in the cluster.
+												Considering fault tolerance, lets the replication of data in
+												master is not enough, since when a master goes down, a
+												new master needs to take its place. In order to achieve that,
+												Redis provides another mode of operation called Sentinel
+												[9]. In this mode, Redis essentially monitors Redis masters
+												and checks if master is alive at regular intervals. If certain
+												Redis sentinels reach a consensus that a master is down,
+												then a new master is elected from the slaves and the elected
+												slave is made a master and rest of the slaves are
+												synchronized with the new master. During the brief period
+												of master going down and new master election, few request
+												may be lost as not all requests processed by the master may
+												be propagated to the slaves because of eventual consistency
+												of Redis.
+												For caching purpose here we have used a simple master
+												slave mode, where a new slave can be added by simply
+												providing the master's address which will be provided by
+												sentinels. The configuration of cache store is
+												straightforward where the address of master is provided.
+											</p>
+										</div>
+										<div class="sub-section">
+											<h3 class="subsection-header">Redis vs Memecached</h3>
+											<p>Before getting into actual evaluations of the test results between Redis and Memcached implementation. These are the few things I observer during implememntaion of Redis and memcached cache storage in django.</p>
+											<h4><u>Cache sharing between multiple django instances</u></h4>
+											<p>One of the major issue that I found during a simple set up for testing if the cache has been shared by multiple instances, is that for some reason, it was not happening.
+												This was because the django caching frameowrk generate keys for each caching where it incluse information specific to the instance like its particular url details and absolute path of the  cache.
+												To mitigate this issue, I have implemented a custom cache extending django current caching framework to generate keys without server specific information, so that multple server can access the sam cache for the sam request.
+											</p>
+											<h4><u>Comparison</u></h4>
+											<p>Performance benchmarks for the django application with
+												memcached and Redis, shows an interesting thing. In this
+												benchmark, the insight that was obtained was that the
+												performance difference for both Redis and Memcached
+												based caching were quite similar for upto 10000 requests.
+												Even so Redis is a better Distributed cache since it has in
+												built fault tolerance and scalability which Memcached
+												lacks, since it relies a lot on the client for the same.</p>
+											</div>
+												<div class="sub-section">
+													<h3 class="subsection-header">Others</h3>
+													<h4>Github issues</h4>
+													<ol>
+														<li><a href="https://github.com/airavata-courses/spring17-django-portal/issues/7">#7</a></li>
+														<li><a href="https://github.com/airavata-courses/spring17-django-portal/issues/8">#8</a></li>
+														<li><a href="https://github.com/airavata-courses/spring17-django-portal/issues/10">#10</a></li>
+													</ol>
+													<h4>Github Commits</h4>
+													<ol>
+														<li><a href="https://github.com/airavata-courses/spring17-django-portal/commit/3366994cdfafd804a92c40ad77922c847c6ab4bb">Adding redis cache support for django</a></li>
+														<li><a href="https://github.com/airavata-courses/spring17-django-portal/commit/dd7ed0baf8cd52b656b8e0ee4eaf10ed9396b201">Adding custom cache extending djangos cache frameowrk to create cache keys for distributed caching</a></li>
+													</ol>
+												</div>
+											</section>
+										</div>
+									</body>
+								</html>
